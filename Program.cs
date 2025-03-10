@@ -87,7 +87,7 @@ app.MapGet("/teams", async () => Results.Ok(service.ListTeams()))
 .WithMetadata(new { 
     Summary = "Lists all teams and their total steps",
     Description = "This endpoint returns a list of all teams and the total steps for each team.",
-    ResponseType = typeof(Dictionary<Guid, int>),
+    ResponseType = typeof(List<TeamData>),
     ResponseStatusCode = 200
 });
 
@@ -101,7 +101,7 @@ app.MapGet("/teams/{teamId}/counters", async (Guid teamId) =>
 .WithMetadata(new { 
     Summary = "Lists all counters in a team",
     Description = "This endpoint lists all counters belonging to a specific team.",
-    ResponseType = typeof(Dictionary<Guid, int>),
+    ResponseType = typeof(List<TeamCounter>),
     ResponseStatusCode = 200, // OK when counters are found
     ResponseStatusCodeError = 404 // Not Found if the team does not exist
 });
