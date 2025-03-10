@@ -55,7 +55,7 @@ public class TeamStepCounterService
     public List<object>? ListCounters(string teamId)
     {
         return _teams.TryGetValue(teamId, out var team) 
-            ? team.Select(new { Counter = x.Key, Steps = x.Value}).ToList()
+            ? team.Select(x => new { Counter = x.Key, Steps = x.Value}).ToList()
             : null;
     }
 
