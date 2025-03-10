@@ -34,7 +34,7 @@ app.MapHealthChecks("/healthz");
 var service = app.Services.GetRequiredService<TeamStepCounterService>();
 
 // Create a new counter for a team
-app.MapPost("/teams/{teamId}/counters/{counterId}", async (Guid teamId, Guid counterId) =>
+app.MapPost("/teams/{teamId}/counters/{counterId}", async (string teamId, string counterId) =>
 {
     var result = await service.AddCounter(teamId, counterId);
     return result ? Results.Ok($"Counter {counterId} added to team {teamId}.") : Results.BadRequest("Failed to add counter.");
@@ -49,7 +49,7 @@ app.MapPost("/teams/{teamId}/counters/{counterId}", async (Guid teamId, Guid cou
 });
 
 // Increment a counter
-app.MapPost("/teams/{teamId}/counters/{counterId}/increment", async (Guid teamId, Guid counterId, [FromBody] int steps) =>
+app.MapPost("/teams/{teamId}/counters/{counterId}/increment", async (string teamId, string counterId, [FromBody] int steps) =>
 {
     if (service.IncrementCounter(teamId, counterId, steps))
     {
@@ -67,7 +67,7 @@ app.MapPost("/teams/{teamId}/counters/{counterId}/increment", async (Guid teamId
 });
 
 // Get total steps for a team
-app.MapGet("/teams/{teamId}/total", async (Guid teamId) =>
+app.MapGet("/teams/{teamId}/total", async (string teamId) =>
 {
     var totalSteps = service.GetTotalSteps(teamId);
     return totalSteps.HasValue ? Results.Ok(totalSteps.Value) : Results.NotFound("Team not found.");
@@ -92,7 +92,7 @@ app.MapGet("/teams", async () => Results.Ok(service.ListTeams()))
 });
 
 // List all counters in a team
-app.MapGet("/teams/{teamId}/counters", async (Guid teamId) =>
+app.MapGet("/teams/{teamId}/counters", async (string teamId) =>
 {
     var counters = service.ListCounters(teamId);
     return counters != null ? Results.Ok(counters) : Results.NotFound("Team not found.");
@@ -107,7 +107,7 @@ app.MapGet("/teams/{teamId}/counters", async (Guid teamId) =>
 });
 
 // Add/Delete teams
-app.MapPost("/teams/{teamId}", async (Guid teamId) =>
+app.MapPost("/teams/{teamId}", async (string teamId) =>
 {
     var result = await service.AddTeam(teamId);
     return result ? Results.Ok($"Team {teamId} added.") : Results.BadRequest("Failed to add team.");
@@ -121,7 +121,7 @@ app.MapPost("/teams/{teamId}", async (Guid teamId) =>
     ResponseStatusCodeError = 400 // Bad Request if the team already exists
 });
 
-app.MapDelete("/teams/{teamId}", async (Guid teamId) =>
+app.MapDelete("/teams/{teamId}", async (string teamId) =>
 {
     await service.DeleteTeam(teamId);
     return Results.Ok($"Team {teamId} deleted.");
@@ -135,7 +135,7 @@ app.MapDelete("/teams/{teamId}", async (Guid teamId) =>
 });
 
 // Add/Delete counters
-app.MapDelete("/teams/{teamId}/counters/{counterId}", async (Guid teamId, Guid counterId) =>
+app.MapDelete("/teams/{teamId}/counters/{counterId}", async (string teamId, string counterId) =>
 {
     await service.DeleteCounter(teamId, counterId);
     return Results.Ok($"Counter {counterId} deleted from team {teamId}.");
