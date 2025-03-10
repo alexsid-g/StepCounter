@@ -52,13 +52,15 @@ public class TeamStepCounterService
         return _teams.TryGetValue(teamId, out var team) ? team.Values.Sum() : (int?)null;
     }
 
-    public Dictionary<string, int>? ListCounters(string teamId)
+    public List<object>? ListCounters(string teamId)
     {
-        return _teams.TryGetValue(teamId, out var team) ? team.ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : null;
+        return _teams.TryGetValue(teamId, out var team) 
+            ? team.Select(new { Counter = x.Key, Steps = x.Value}).ToList()
+            : null;
     }
 
-    public Dictionary<string, int> ListTeams()
+    public List<object> ListTeams()
     {
-        return _teams.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Values.Sum());
+        return _teams.Select(x => new { Team = x.Key, TotalSteps = x.Value.Values.Sum()}).ToList();
     }
 }
