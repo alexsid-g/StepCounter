@@ -6,20 +6,20 @@ using System.Linq;
 
 public class TeamStepCounterService
 {
-    private readonly ConcurrentDictionary<Guid, ConcurrentDictionary<Guid, int>> _teams = new();
+    private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, int>> _teams = new();
 
-    public Task<bool> AddTeam(Guid teamId)
+    public Task<bool> AddTeam(string teamId)
     {
-        return Task.FromResult(_teams.TryAdd(teamId, new ConcurrentDictionary<Guid, int>()));
+        return Task.FromResult(_teams.TryAdd(teamId, new ConcurrentDictionary<string, int>()));
     }
 
-    public Task DeleteTeam(Guid teamId)
+    public Task DeleteTeam(string teamId)
     {
         _teams.TryRemove(teamId, out _);
         return Task.CompletedTask;
     }
 
-    public Task<bool> AddCounter(Guid teamId, Guid counterId)
+    public Task<bool> AddCounter(string teamId, string counterId)
     {
         if (_teams.TryGetValue(teamId, out var team))
         {
@@ -28,7 +28,7 @@ public class TeamStepCounterService
         return Task.FromResult(false);
     }
 
-    public Task DeleteCounter(Guid teamId, Guid counterId)
+    public Task DeleteCounter(string teamId, string counterId)
     {
         if (_teams.TryGetValue(teamId, out var team))
         {
@@ -37,7 +37,7 @@ public class TeamStepCounterService
         return Task.CompletedTask;
     }
 
-    public bool IncrementCounter(Guid teamId, Guid counterId, int steps)
+    public bool IncrementCounter(string teamId, string counterId, int steps)
     {
         if (_teams.TryGetValue(teamId, out var team) && team.ContainsKey(counterId))
         {
@@ -47,17 +47,17 @@ public class TeamStepCounterService
         return false;
     }
 
-    public int? GetTotalSteps(Guid teamId)
+    public int? GetTotalSteps(string teamId)
     {
         return _teams.TryGetValue(teamId, out var team) ? team.Values.Sum() : (int?)null;
     }
 
-    public Dictionary<Guid, int>? ListCounters(Guid teamId)
+    public Dictionary<string, int>? ListCounters(string teamId)
     {
         return _teams.TryGetValue(teamId, out var team) ? team.ToDictionary(kvp => kvp.Key, kvp => kvp.Value) : null;
     }
 
-    public Dictionary<Guid, int> ListTeams()
+    public Dictionary<string, int> ListTeams()
     {
         return _teams.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Values.Sum());
     }
