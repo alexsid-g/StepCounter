@@ -1,4 +1,4 @@
-public class Team
+public class TeamData
 {
     // Property for the identifier or key
     public string Team { get; set; }
@@ -7,7 +7,7 @@ public class Team
     public int TotalSteps { get; set; }
 
     // Constructor to initialize the properties
-    public Team(string team, int totalSteps)
+    public TeamData(string team, int totalSteps)
     {
         Team = team;
         TotalSteps = totalSteps;

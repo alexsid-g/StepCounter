@@ -7,7 +7,7 @@ public class TeamCounter
     public int Steps { get; set; }
 
     // Constructor to initialize the properties
-    public TeamMember(string counter, int steps)
+    public TeamCounter(string counter, int steps)
     {
         Counter = counter;
         Steps = steps;
