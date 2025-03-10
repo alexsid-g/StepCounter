@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Copy project and restore dependencies
-COPY TeamStepsApi.csproj ./
+COPY TeamSteps.WebApi.csproj ./
 RUN dotnet restore
 
 # Copy the rest of the application
@@ -20,4 +20,4 @@ EXPOSE 5000
 EXPOSE 5001
 
 # Start the application
-ENTRYPOINT ["dotnet", "TeamStepsApi.dll"]
+ENTRYPOINT ["dotnet", "TeamSteps.WebApi.dll"]
