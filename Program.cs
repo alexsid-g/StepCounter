@@ -33,7 +33,14 @@ app.MapHealthChecks("/healthz");
 // Dependency Injection
 var service = app.Services.GetRequiredService<TeamStepCounterService>();
 
-// Create a new counter for a team
+/// <summary>
+/// Creates a new counter for a team
+/// </summary>
+/// <param name="teamId">The ID of the team</param>
+/// <param name="counterId">The ID of the counter to be added</param>
+/// <returns>A success or failure message</returns>
+/// <response code="200">Counter successfully added</response>
+/// <response code="400">Bad request if adding the counter fails</response>
 app.MapPost("/teams/{teamId}/counters/{counterId}", async (string teamId, string counterId) =>
 {
     var result = await service.AddCounter(teamId, counterId);
