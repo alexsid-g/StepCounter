@@ -81,7 +81,7 @@ app.MapDelete("/teams/{teamId}", async (string teamId) =>
 });
 
 // Add/Delete counters
-app.MapDelete("/teams/{teamId}/counters/{counterId}", async (string teamId, Guid counterId) =>
+app.MapDelete("/teams/{teamId}/counters/{counterId}", async (string teamId, string counterId) =>
 {
     await service.DeleteCounter(teamId, counterId);
     return Results.Ok($"Counter {counterId} deleted from team {teamId}.");
