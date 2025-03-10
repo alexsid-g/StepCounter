@@ -8,7 +8,7 @@ RUN dotnet restore
 
 # Copy the rest of the application
 COPY . ./
-RUN dotnet publish "./MemoryLeak.WebApi.csproj" -c Release -o out
+RUN dotnet publish "./TeamSteps.WebApi.csproj" -c Release -o out
 
 # Use runtime-only image to keep the container small
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
