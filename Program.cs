@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
 {
-    config.Title = "Step Counter API";
+    config.Title = "Team Step Counter API";
     config.Version = "v1";
 });
 
@@ -25,7 +25,7 @@ var app = builder.Build();
 
 // Swagger
 app.UseOpenApi();
-app.UseSwaggerUi3();
+app.UseSwaggerUi();
 
 // Health Checks
 app.MapHealthChecks("/healthz");
