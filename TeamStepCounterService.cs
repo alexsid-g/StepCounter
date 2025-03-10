@@ -52,15 +52,15 @@ public class TeamStepCounterService
         return _teams.TryGetValue(teamId, out var team) ? team.Values.Sum() : (int?)null;
     }
 
-    public List<object>? ListCounters(string teamId)
+    public List<TeamCounter>? ListCounters(string teamId)
     {
         return _teams.TryGetValue(teamId, out var team) 
-            ? team.Select(x => new { Counter = x.Key, Steps = x.Value}).ToList()
+            ? team.Select(x => new TeamCounter(x.Key, x.Value)).ToList()
             : null;
     }
 
-    public List<object> ListTeams()
+    public List<Team> ListTeams()
     {
-        return _teams.Select(x => new { Team = x.Key, TotalSteps = x.Value.Values.Sum()}).ToList();
+        return _teams.Select(x => new Team(x.Key, x.Value.Values.Sum(}).ToList();
     }
 }
