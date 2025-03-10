@@ -37,12 +37,6 @@ app.MapPost("/teams/{teamId}/counters/{counterId}", async (string teamId, string
 {
     var result = await service.AddCounter(teamId, counterId);
     return result ? Results.Ok($"Counter {counterId} added to team {teamId}.") : Results.BadRequest("Failed to add counter.");
-})
-.WithName("GetHello")
-.WithOpenApi(operation => new OpenApiOperation
-{
-    Summary = "Returns a greeting message",
-    Description = "A simple endpoint that returns 'Hello, NSwag!'"
 });
 
 // Increment a counter
