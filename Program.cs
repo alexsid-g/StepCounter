@@ -29,7 +29,10 @@ var app = builder.Build();
 
 // Swagger
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(config =>
+{
+    config.SwaggerEndpoint("/swagger/v1/swagger.json", "TeamSteps API v1");
+});
 
 // Health Checks
 app.MapHealthChecks("/healthz");
@@ -43,13 +46,19 @@ app.MapPost("/teams/{teamId}/counters/{counterId}", async (string teamId, string
     return result ? Results.Ok($"Counter {counterId} added to team {teamId}.") : Results.BadRequest("Failed to add counter.");
 })
 .WithName("CreateCounter")
+.WithOpenApi(x => new OpenApiOperation
+{
+    Summary = "Returns a greeting message",
+    Description = "A simple endpoint that returns 'Hello, World!'"
+});
+/*
 .WithMetadata(new { 
     Summary = "Creates a new counter for a team",
     Description = "This endpoint adds a new counter to a specific team using the provided teamId and counterId.",
     ResponseType = typeof(string),
     ResponseStatusCode = 200, // OK when counter is added
     ResponseStatusCodeError = 400 // Bad Request if counter addition fails
-});
+});*/
 
 // Increment a counter
 app.MapPost("/teams/{teamId}/counters/{counterId}/increment", async (string teamId, string counterId, [FromBody] int steps) =>
