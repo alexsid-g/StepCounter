@@ -25,7 +25,7 @@ var app = builder.Build();
 
 // Swagger
 app.UseOpenApi();
-app.UseSwaggerUi3();
+app.UseSwaggerUi();
 
 // Health Checks
 app.MapHealthChecks("/healthz");
