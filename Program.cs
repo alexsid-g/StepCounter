@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using NSwag.AspNetCore;
+using NSwashbuckle.AspNetCore;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApiDocument(config =>
+builder.Services.AddSwaggerGen(options =>
 {
-    config.Title = "Step Counter API";
-    config.Version = "v1";
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "TeamSteps API",
+        Description = "An ASP.NET Core Web API for managing Teams and Steps",
+    });
 });
 
 builder.Services.AddSingleton<TeamStepCounterService>();
@@ -24,8 +28,8 @@ builder.Services.AddHealthChecks();
 var app = builder.Build();
 
 // Swagger
-app.UseOpenApi();
-app.UseSwaggerUi();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Health Checks
 app.MapHealthChecks("/healthz");
@@ -33,14 +37,6 @@ app.MapHealthChecks("/healthz");
 // Dependency Injection
 var service = app.Services.GetRequiredService<TeamStepCounterService>();
 
-/// <summary>
-/// Creates a new counter for a team
-/// </summary>
-/// <param name="teamId">The ID of the team</param>
-/// <param name="counterId">The ID of the counter to be added</param>
-/// <returns>A success or failure message</returns>
-/// <response code="200">Counter successfully added</response>
-/// <response code="400">Bad request if adding the counter fails</response>
 app.MapPost("/teams/{teamId}/counters/{counterId}", async (string teamId, string counterId) =>
 {
     var result = await service.AddCounter(teamId, counterId);
