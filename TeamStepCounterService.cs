@@ -61,6 +61,6 @@ public class TeamStepCounterService
 
     public List<TeamData> ListTeams()
     {
-        return _teams.Select(x => new TeamData(x.Key, x.Value.Values.Sum()).ToList();
+        return _teams.Select(x => new TeamData(x.Key, x.Value.Values.Sum())).ToList();
     }
 }
